@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_CONNECTION_STRING")
+}
+
+model Characters {
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(100)
+  description     String            @db.VarChar(255)
+  imageUrl        String            @db.VarChar(100)
+  createdAt       DateTime?         @db.DateTime(0)
+  updatedAt       DateTime?         @db.DateTime(0)
+  EventCharacters EventCharacters[]
+}
+
+model EventCharacters {
+  eventId     Int
+  characterId Int
+  Events      Events     @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "EventCharacters_FK")
+  Characters  Characters @relation(fields: [characterId], references: [id], onDelete: Cascade, map: "EventCharacters_FK_1")
+
+  @@id([eventId, characterId])
+  @@index([characterId], map: "EventCharacters_FK_1")
+}
+
+model Events {
+  id              Int               @id @default(autoincrement())
+  title           String            @db.VarChar(100)
+  description     String            @db.LongText
+  mediaType       String            @db.VarChar(100)
+  mediaTitle      String            @db.VarChar(100)
+  releaseDate     DateTime          @db.DateTime(0)
+  imageUrl        String?           @db.VarChar(100)
+  createdAt       DateTime?         @db.DateTime(0)
+  updatedAt       DateTime?         @db.DateTime(0)
+  EventCharacters EventCharacters[]
+}
