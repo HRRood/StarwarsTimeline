@@ -29,13 +29,46 @@ model EventCharacters {
 
 model Events {
   id              Int               @id @default(autoincrement())
-  title           String            @db.VarChar(100)
+  title           String            @unique(map: "Events_UN_Title") @db.VarChar(100)
   description     String            @db.LongText
-  mediaType       String            @db.VarChar(100)
-  mediaTitle      String            @db.VarChar(100)
-  releaseDate     DateTime          @db.DateTime(0)
+  fromDate        Int
+  toDate          Int
   imageUrl        String?           @db.VarChar(100)
-  createdAt       DateTime?         @db.DateTime(0)
-  updatedAt       DateTime?         @db.DateTime(0)
+  createdAt       DateTime          @db.DateTime(0)
+  updatedAt       DateTime          @db.DateTime(0)
   EventCharacters EventCharacters[]
+  MediaEvents     MediaEvents[]
+}
+
+model Media {
+  id          Int           @id @default(autoincrement())
+  title       String        @unique(map: "title_UNIQUE") @db.VarChar(255)
+  description String?       @db.LongText
+  mediaTypeId Int?
+  releaseDate DateTime      @db.DateTime(0)
+  imageUrl    String?       @db.VarChar(100)
+  createdAt   DateTime      @default(now()) @db.DateTime(0)
+  updatedAt   DateTime      @default(now()) @db.DateTime(0)
+  dateFrom    Int
+  dateTo      Int
+  MediaType   MediaType?    @relation(fields: [mediaTypeId], references: [id], map: "FK_Media_MediaType")
+  MediaEvents MediaEvents[]
+
+  @@index([mediaTypeId], map: "FK_Media_MediaType_idx")
+}
+
+model MediaType {
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar(255)
+  Media Media[]
+}
+
+model MediaEvents {
+  mediaId Int
+  eventId Int
+  Events  Events @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "FK_MediaEvents_Events")
+  Media   Media  @relation(fields: [mediaId], references: [id], onDelete: Cascade, map: "FK_MediaEvents_Media")
+
+  @@id([eventId, mediaId])
+  @@index([mediaId], map: "FK_MediaEvents_Media_idx")
 }
