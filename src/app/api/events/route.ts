@@ -5,29 +5,30 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function GET(request: Request) {
+  console.log(request);
   const events = await GetEvents({ pageNumber: 1, pageSize: 10 });
   return NextResponse.json(events);
 }
 
-// interface PostBody {
-//   title: string;
-//   description: string;
-//   fromDate: number;
-//   toDate: number;
-//   imageUrl?: string;
-// }
+interface PostBody {
+  title: string;
+  description: string;
+  fromDate: number;
+  toDate: number;
+  imageUrl?: string;
+}
 
-const PostBody = z.object({
-  title: z.string(),
-  description: z.string(),
-  fromDate: z.number(),
-  toDate: z.number(),
+const EventsDataValidation = z.object({
+  title: z.string().nonempty(),
+  description: z.string().nonempty(),
+  fromDate: z.coerce.number(),
+  toDate: z.coerce.number(),
   imageUrl: z.string().optional(),
 });
 
 export async function POST(request: Request) {
-  const { title, description, fromDate, toDate, imageUrl = "" } = await request.json();
-  const body = PostBody.safeParse({ title, description, fromDate, toDate, imageUrl });
+  const { title, description, fromDate, toDate, imageUrl = "" }: PostBody = await request.json();
+  const body = EventsDataValidation.safeParse({ title, description, fromDate, toDate, imageUrl });
 
   if (!body.success) {
     return NextResponse.json(
@@ -69,6 +70,7 @@ export async function POST(request: Request) {
     })
     .catch((error) => {
       let errorMessage = "Something went wrong";
+      console.log(error);
       return {
         success: false,
         error: errorMessage,
