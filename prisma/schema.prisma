@@ -11,7 +11,7 @@ model Characters {
   id              Int               @id @default(autoincrement())
   name            String            @db.VarChar(100)
   description     String            @db.VarChar(255)
-  imageUrl        String            @db.VarChar(100)
+  imageUrl        String?           @db.VarChar(100)
   createdAt       DateTime?         @db.DateTime(0)
   updatedAt       DateTime?         @db.DateTime(0)
   EventCharacters EventCharacters[]

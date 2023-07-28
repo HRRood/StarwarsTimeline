@@ -1,5 +1,5 @@
 import styles from "./Page.module.css";
-import { GetEvents } from "@/stores/events/getEvents";
+import { GetEvents } from "@/repository/events/getEvents";
 import { CreateEventModal } from "../../../components/CreateEventModal/CreateEventModal";
 import { EventsTable } from "@/components/EventsTable/EventsTable";
 

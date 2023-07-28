@@ -9,8 +9,11 @@ import { format } from "date-fns";
 import styles from "./EventsTable.module.css";
 import { useLoadEvents } from "@/hooks/useLoadEvents";
 import { useEffect, useState } from "react";
+import { Table } from "../Global/Table";
+import { TableColumn, TableHead } from "../Global/TableHead";
+import { TableBody } from "../Global/TableBody";
 
-const columns = [
+const columns: TableColumn[] = [
   {
     key: "id",
     label: "ID",
@@ -26,18 +29,22 @@ const columns = [
   {
     key: "fromDate",
     label: "From Date",
+    render: (row) => formatStarwarsDatePeriod(row.fromDate),
   },
   {
     key: "toDate",
     label: "To Date",
+    render: (row) => formatStarwarsDatePeriod(row.toDate),
   },
   {
     key: "createdAt",
     label: "Created",
+    render: (row) => format(new Date(row.createdAt), "dd-MM-yy hh:mm:ss"),
   },
   {
     key: "updatedAt",
     label: "Updated",
+    render: (row) => format(new Date(row.updatedAt), "dd-MM-yy hh:mm:ss"),
   },
   {
     key: "",
@@ -61,30 +68,7 @@ export const EventsTable = ({ events }: EventsTableProps) => {
 
   return (
     <div className={styles.table_container}>
-      {/* <DataGrid rows={events} columns={DataGridColumns} hideFooter /> */}
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.key}>{column.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((event) => (
-            <tr key={event.id}>
-              <td>{event.id}</td>
-              <td>{event.title}</td>
-              <td>{event.description}</td>
-              <td>{formatStarwarsDatePeriod(event.fromDate)}</td>
-              <td>{formatStarwarsDatePeriod(event.toDate)}</td>
-              <td>{format(new Date(event?.createdAt ?? ""), "dd-MM-yy hh:mm:ss")}</td>
-              <td>{format(new Date(event?.updatedAt ?? ""), "dd-MM-yy hh:mm:ss")}</td>
-              <td></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table data={tableData} columns={columns} />
     </div>
   );
 };

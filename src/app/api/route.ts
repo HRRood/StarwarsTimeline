@@ -1,4 +1,4 @@
-import { GetFullEventsData } from "@/stores/events/getFullEventsData";
+import { GetFullEventsData } from "@/repository/events/getFullEventsData";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {

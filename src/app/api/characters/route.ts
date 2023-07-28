@@ -1,33 +1,29 @@
 import { prisma } from "@/lib/prisma";
-import { GetEvents } from "@/repository/events/getEvents";
+import { GetCharacters } from "@/repository/characters/getCharacters";
 import { mapZodErrorIssues } from "@/utils/mapZodErrorIssues";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function GET(request: Request) {
-  const events = await GetEvents({ pageNumber: 1, pageSize: 10 });
+export async function GET() {
+  const events = await GetCharacters({ pageNumber: 1, pageSize: 10 });
   return NextResponse.json(events);
 }
 
 interface PostBody {
-  title: string;
+  name: string;
   description: string;
-  fromDate: number;
-  toDate: number;
   imageUrl?: string;
 }
 
-const EventsDataValidation = z.object({
-  title: z.string().nonempty(),
+const CharacterDataValidation = z.object({
+  name: z.string().nonempty(),
   description: z.string().nonempty(),
-  fromDate: z.coerce.number(),
-  toDate: z.coerce.number(),
   imageUrl: z.string().optional(),
 });
 
 export async function POST(request: Request) {
-  const { title, description, fromDate, toDate, imageUrl = "" }: PostBody = await request.json();
-  const body = EventsDataValidation.safeParse({ title, description, fromDate, toDate, imageUrl });
+  const { name, description, imageUrl = "" }: PostBody = await request.json();
+  const body = CharacterDataValidation.safeParse({ name, description, imageUrl });
 
   if (!body.success) {
     return NextResponse.json(
@@ -39,25 +35,23 @@ export async function POST(request: Request) {
     );
   }
 
-  const eventWithSameTitle = await prisma.events.findFirst({
+  const characterWithSameName = await prisma.characters.findFirst({
     where: {
-      title: body.data.title,
+      name: body.data.name,
     },
   });
-  if (eventWithSameTitle) {
+  if (characterWithSameName) {
     return NextResponse.json({
       success: false,
-      error: "Event with title already exists",
+      error: "Charaxcter with name already exists",
     });
   }
 
-  const createdResponse = await prisma.events
+  const createdResponse = await prisma.characters
     .create({
       data: {
-        title: body.data.title,
+        name: body.data.name,
         description: body.data.description,
-        fromDate: body.data.fromDate,
-        toDate: body.data.toDate,
         imageUrl: body.data.imageUrl,
       },
     })
