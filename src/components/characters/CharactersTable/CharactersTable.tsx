@@ -3,8 +3,8 @@
 import { Characters } from "@prisma/client";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import { Table } from "../Global/Table";
-import { TableColumn } from "../Global/TableHead";
+import { Table } from "../../Global/Table/Table";
+import { TableColumn } from "../../Global/Table/TableHead";
 import { useLoadCharacters } from "@/hooks/useLoadCharacters";
 
 import styles from "./CharactersTable.module.css";

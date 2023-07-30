@@ -1,7 +1,7 @@
 import styles from "./Page.module.css";
 import { GetEvents } from "@/repository/events/getEvents";
-import { CreateEventModal } from "../../../components/CreateEventModal/CreateEventModal";
-import { EventsTable } from "@/components/EventsTable/EventsTable";
+import { CreateEventModal } from "../../../components/events/CreateEventModal/CreateEventModal";
+import { EventsTable } from "@/components/events/EventsTable/EventsTable";
 
 export default async function Events() {
   const events = await GetEvents({ pageNumber: 1, pageSize: 10 });

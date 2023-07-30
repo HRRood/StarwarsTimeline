@@ -2,7 +2,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from "@mui/material";
 import { forwardRef, useState } from "react";
 import { TransitionProps } from "@mui/material/transitions";
-import { TextInput } from "../Form/TextInput/TextInput";
+import { TextInput } from "../../Global/Form/TextInput/TextInput";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 

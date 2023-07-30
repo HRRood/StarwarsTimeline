@@ -9,6 +9,7 @@
   border-bottom: 1px solid rgb(var(--foreground-rgb));
   padding: 5px;
   max-width: 200px;
+  text-align: start;
 }
 
 .table thead th:first-child {

@@ -1,17 +1,14 @@
 "use client";
 
 import { formatStarwarsDatePeriod } from "@/utils/formatStarwarsDatePeriod";
-// import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-// import { Table } from "@nextui-org/react";
 import { Events } from "@prisma/client";
 import { format } from "date-fns";
-
-import styles from "./EventsTable.module.css";
 import { useLoadEvents } from "@/hooks/useLoadEvents";
 import { useEffect, useState } from "react";
-import { Table } from "../Global/Table";
-import { TableColumn, TableHead } from "../Global/TableHead";
-import { TableBody } from "../Global/TableBody";
+import { Table } from "../../Global/Table/Table";
+import { TableColumn } from "../../Global/Table/TableHead";
+
+import styles from "./EventsTable.module.css";
 
 const columns: TableColumn[] = [
   {
