@@ -12,10 +12,13 @@ export const AdminNavbar = () => {
       </div>
       <ul className={styles.navLinks}>
         <li>
-          <Link href="/admin/events">Events Management</Link>
+          <Link href="/admin/events">Events</Link>
         </li>
         <li>
-          <Link href="/admin/characters">Characters Management</Link>
+          <Link href="/admin/characters">Characters</Link>
+        </li>
+        <li>
+          <Link href="/admin/media-types">Media Types</Link>
         </li>
       </ul>
     </nav>
