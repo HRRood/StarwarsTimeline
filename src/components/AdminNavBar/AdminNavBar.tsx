@@ -18,6 +18,9 @@ export const AdminNavbar = () => {
           <Link href="/admin/characters">Characters</Link>
         </li>
         <li>
+          <Link href="/admin/media">Media</Link>
+        </li>
+        <li>
           <Link href="/admin/media-types">Media Types</Link>
         </li>
       </ul>
