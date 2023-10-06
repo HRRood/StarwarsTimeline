@@ -1,16 +1,14 @@
 "use client";
-import { Button, Slide } from "@mui/material";
-import { forwardRef, useState } from "react";
+import { Slide } from "@mui/material";
+import { forwardRef } from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import { TextInput } from "../../Global/Form/TextInput/TextInput";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import styles from "./CreateCharacterModal.module.css";
 import { z } from "zod";
-import { mutate } from "swr";
-import { getUseLoadCharactersKey } from "@/hooks/useLoadCharacters";
+import { getUseLoadCharactersKey, useLoadCharacters } from "@/hooks/useLoadCharacters";
 import { CreateDialog } from "@/components/CreateDialog/CreateDialog";
+import { mutate } from "swr";
 
 const CharacterDataValidation = z.object({
   name: z.string().nonempty("Field is required"),
@@ -28,20 +26,13 @@ const Transition = forwardRef(function Transition(
 });
 
 export const CreateCharacterModal = () => {
-  const [open, setOpen] = useState(false);
-  const form = useForm({
-    resolver: zodResolver(CharacterDataValidation),
-  });
-
-  const handleClose = () => setOpen(false);
-
   const onNewCharacterSubmit = async (data: any, callback: () => void) => {
     fetch("/api/characters", {
       method: "POST",
       body: JSON.stringify(data),
     })
       .then((res) => {
-        mutate(getUseLoadCharactersKey());
+        mutate((key) => typeof key === "string" && key.startsWith("useLoadCharacters"));
         callback();
       })
       .catch((err) => {
@@ -49,16 +40,11 @@ export const CreateCharacterModal = () => {
       });
   };
   return (
-    <div>
-      <Button variant="contained" color="success" type="button" onClick={() => setOpen(true)}>
-        +
-      </Button>
-      <CreateDialog DataValidation={CharacterDataValidation} title="Create new character" onSubmit={onNewCharacterSubmit}>
-        <div className={styles.fields_group}>
-          <TextInput id="name" name="name" label="Name" />
-          <TextInput id="description" name="description" label="Description" multiline />
-        </div>
-      </CreateDialog>
-    </div>
+    <CreateDialog DataValidation={CharacterDataValidation} title="Create new character" onSubmit={onNewCharacterSubmit}>
+      <div className={styles.fields_group}>
+        <TextInput id="name" name="name" label="Name" />
+        <TextInput id="description" name="description" label="Description" multiline />
+      </div>
+    </CreateDialog>
   );
 };

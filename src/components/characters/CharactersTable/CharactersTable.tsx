@@ -1,13 +1,13 @@
 "use client";
 
-import { Characters } from "@prisma/client";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
 import { Table } from "../../Global/Table/Table";
 import { TableColumn } from "../../Global/Table/TableHead";
 import { useLoadCharacters } from "@/hooks/useLoadCharacters";
 
 import styles from "./CharactersTable.module.css";
+import Loader from "@/components/Global/loader";
+import { useState } from "react";
 
 const columns: TableColumn[] = [
   {
@@ -38,23 +38,27 @@ const columns: TableColumn[] = [
   },
 ];
 
-interface CharactersTableProps {
-  characters: Characters[];
-}
+export const CharactersTable = () => {
+  const [pageNumber, setPageNumber] = useState(1);
+  const { data, isLoading } = useLoadCharacters(pageNumber);
 
-export const CharactersTable = ({ characters }: CharactersTableProps) => {
-  const { data, isLoading } = useLoadCharacters();
-  const [tableData, setTableData] = useState<Characters[]>(characters);
-
-  useEffect(() => {
-    if (data) {
-      setTableData(data);
-    }
-  }, [data]);
+  if (!isLoading && (!data || !data.success)) {
+    return <div>No data</div>;
+  }
 
   return (
     <div className={styles.table_container}>
-      <Table data={tableData} columns={columns} />
+      <Loader isLoading={isLoading} />
+      {data && (
+        <Table
+          data={data.data.characters}
+          columns={columns}
+          pagination={data.data.pagination}
+          setPageNumber={(number) => {
+            setPageNumber(number);
+          }}
+        />
+      )}
     </div>
   );
 };

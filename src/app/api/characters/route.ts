@@ -1,12 +1,33 @@
 import { prisma } from "@/lib/prisma";
 import { GetCharacters } from "@/repository/characters/getCharacters";
+import { GetTotalCharactersCount } from "@/repository/characters/getTotalCharacterCount";
+import { createDefaultResponse } from "@/utils/defaulrResponse";
 import { mapZodErrorIssues } from "@/utils/mapZodErrorIssues";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function GET() {
-  const events = await GetCharacters({ pageNumber: 1, pageSize: 10 });
-  return NextResponse.json(events);
+export async function GET(request: Request) {
+  //queryParams for page number and page size
+  const { searchParams } = new URL(request.url);
+  const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+  const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
+  const characters = await GetCharacters({ pageNumber, pageSize });
+  const totalCount = await GetTotalCharactersCount();
+  const totalPages = Math.ceil(totalCount / pageSize);
+  const nextPage = pageNumber + 1;
+  const previousPage = pageNumber - 1;
+  const hasNextPage = nextPage <= totalPages;
+  const hasPreviousPage = previousPage >= 1;
+  const pagination = {
+    currentPage: pageNumber,
+    nextPage,
+    previousPage,
+    hasNextPage,
+    hasPreviousPage,
+    totalPages,
+    totalCount,
+  };
+  return NextResponse.json(createDefaultResponse({ characters, pagination }));
 }
 
 interface PostBody {

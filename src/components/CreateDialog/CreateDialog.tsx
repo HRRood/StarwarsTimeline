@@ -37,7 +37,8 @@ export const CreateDialog = ({ DataValidation, onSubmit, title, children }: Crea
       <Dialog open={open} TransitionComponent={Transition} maxWidth="md" fullWidth onClose={handleClose} aria-describedby="alert-dialog-slide-description">
         <FormProvider {...form}>
           <form
-            onSubmit={form.handleSubmit((data) => {
+            onSubmit={form.handleSubmit((data, e) => {
+              const buttonType = e?.target.querySelector("[data-type]");
               onSubmit(data, () => {
                 handleClose();
               });
