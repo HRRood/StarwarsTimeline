@@ -1,28 +1,15 @@
 "use client";
-import { Slide } from "@mui/material";
-import { forwardRef } from "react";
-import { TransitionProps } from "@mui/material/transitions";
-import { TextInput } from "../../Global/Form/TextInput/TextInput";
-
-import styles from "./CreateCharacterModal.module.css";
-import { z } from "zod";
-import { getUseLoadCharactersKey, useLoadCharacters } from "@/hooks/useLoadCharacters";
-import { CreateDialog } from "@/components/CreateDialog/CreateDialog";
 import { mutate } from "swr";
+import { z } from "zod";
+
+import { CreateDialog } from "@/components/CreateDialog/CreateDialog";
+import { TextInput } from "@/components/Global/Form/TextInput/TextInput";
+import styles from "./CreateCharacterModal.module.css";
 
 const CharacterDataValidation = z.object({
   name: z.string().nonempty("Field is required"),
   description: z.string().nonempty("Field is required"),
   imageUrl: z.string().optional(),
-});
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any, any>;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export const CreateCharacterModal = () => {

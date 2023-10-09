@@ -1,4 +1,4 @@
-export class Api {
+class Api {
   public get(url: string, options?: RequestInit): Promise<any> {
     return this.sendRequest(url, { ...options, method: "get" });
   }

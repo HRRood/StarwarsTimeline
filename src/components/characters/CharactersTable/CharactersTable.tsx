@@ -1,40 +1,40 @@
-"use client";
+'use client';
+import { useState } from 'react';
+import { format } from 'date-fns';
 
-import { format } from "date-fns";
-import { Table } from "../../Global/Table/Table";
-import { TableColumn } from "../../Global/Table/TableHead";
-import { useLoadCharacters } from "@/hooks/useLoadCharacters";
+import Loader from '@/components/Global/Loader/loader';
+import { TableColumn } from '@/components/Global/Table/TableHead';
+import { Table } from '@/components/Global/Table/Table';
+import { useLoadCharacters } from '@/hooks/useLoadCharacters';
 
-import styles from "./CharactersTable.module.css";
-import Loader from "@/components/Global/loader";
-import { useState } from "react";
+import styles from './CharactersTable.module.css';
 
 const columns: TableColumn[] = [
   {
-    key: "id",
-    label: "ID",
+    key: 'id',
+    label: 'ID',
   },
   {
-    key: "name",
-    label: "Name",
+    key: 'name',
+    label: 'Name',
   },
   {
-    key: "description",
-    label: "Description",
+    key: 'description',
+    label: 'Description',
   },
   {
-    key: "createdAt",
-    label: "Created",
-    render: (row) => format(new Date(row.createdAt), "dd-MM-yy hh:mm:ss"),
+    key: 'createdAt',
+    label: 'Created',
+    render: (row) => format(new Date(row.createdAt), 'dd-MM-yy hh:mm:ss'),
   },
   {
-    key: "updatedAt",
-    label: "Updated",
-    render: (row) => format(new Date(row.updatedAt), "dd-MM-yy hh:mm:ss"),
+    key: 'updatedAt',
+    label: 'Updated',
+    render: (row) => format(new Date(row.updatedAt), 'dd-MM-yy hh:mm:ss'),
   },
   {
-    key: "",
-    label: "Actions",
+    key: '',
+    label: 'Actions',
   },
 ];
 
