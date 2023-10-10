@@ -1,10 +1,17 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
-import { forwardRef, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slide,
+} from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
+import { forwardRef, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -22,7 +29,12 @@ interface CreateDialogProps {
   children: React.ReactNode;
 }
 
-export const CreateDialog = ({ DataValidation, onSubmit, title, children }: CreateDialogProps) => {
+export const CreateDialog = ({
+  DataValidation,
+  onSubmit,
+  title,
+  children,
+}: CreateDialogProps) => {
   const [open, setOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(DataValidation),
@@ -31,14 +43,25 @@ export const CreateDialog = ({ DataValidation, onSubmit, title, children }: Crea
   const handleClose = () => setOpen(false);
   return (
     <div>
-      <Button variant="contained" color="success" type="button" onClick={() => setOpen(true)}>
+      <Button
+        variant="contained"
+        color="success"
+        type="button"
+        onClick={() => setOpen(true)}
+      >
         +
       </Button>
-      <Dialog open={open} TransitionComponent={Transition} maxWidth="md" fullWidth onClose={handleClose} aria-describedby="alert-dialog-slide-description">
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        maxWidth="md"
+        fullWidth
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
         <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit((data, e) => {
-              const buttonType = e?.target.querySelector("[data-type]");
               onSubmit(data, () => {
                 handleClose();
               });
